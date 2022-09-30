@@ -1,0 +1,124 @@
+[tool.poetry]
+name = "pyanypay"
+version = "0.1.0"
+description = "Universal library for AnyPay API"
+authors = ["FeeeeK <26704473+FeeeeK@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/FeeeeK/pyAnyPay"
+repository = "https://github.com/FeeeeK/pyAnyPay"
+keywords = [
+  "async",
+  "asyncio",
+  "anypay",
+  "anypay-api",
+  "anypay-python",
+  "pyanypay",
+]
+classifiers = [
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Quality Assurance",
+  "Typing :: Typed",
+]
+exclude = ["**/tests/*", "**/test_*"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/FeeeeK/pyAnyPay/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiohttp = "^3.8.3"
+msgspec = "^0.9.0"
+
+[tool.poetry.group.dev.dependencies]
+# Lint
+black = "^22.8.0"
+isort = "^5.10.1"
+mypy = "^0.981"
+mypy-extensions = "^0.4.3"
+# flake8 and it's plugins
+flake8 = "^4.0.1"
+flakeheaven = "^3.0.0" # wrapper for flake8 with better plugin management
+flake8-bugbear = "^22.9.23"
+flake8-scream = "^0.1.0"
+flake8-logging-format = "^0.7.5"
+flake8-annotations-complexity = "^0.0.7"
+flake8-alphabetize = "^0.0.17"
+flake8-pie = "^0.16.0"
+flake8-comprehensions = "^3.10.0"
+dlint = "^0.13.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+
+[tool.mypy]
+python_version = 3.8
+ignore_missing_imports = true
+warn_no_return = false
+warn_return_any = false
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "*.tests.*"
+ignore_errors = true
+
+
+[tool.black]
+line-length = 99
+target-version = ['py37']
+
+
+[tool.isort]
+profile = "black"
+line_length = 99
+
+
+[tool.flakeheaven]
+max_line_length = 99
+max_annotations_complexity = 4
+exclude = [
+  ".git",
+  "build",
+  "dist",
+  "venv",
+  ".venv",
+  "docs",
+  "*.egg-info",
+  "*.md",
+]
+
+[tool.flakeheaven.plugins]
+"flake8-*" = ["+*"]
+"flake8-alphabetize-core" = [
+  "+*",
+  "-AZ100",
+  "-AZ200",
+  "-AZ300"
+]
+flake8-pie = [
+  "+*",
+  "-PIE786",
+]
+pycodestyle = [
+  "+*",
+  "-E203", # whitespace before ':' (black)
+  "-E501", # line too long
+  "-W503", # line break before binary operator (black)
+  "-W504", # line break after binary operator (black)
+]
+pylint = ["+*"]
+pyflakes = ["+*"]
+mccabe = ["+*"]
+dlint = ["+*", "-DUO102"]

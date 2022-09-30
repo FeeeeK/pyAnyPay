@@ -1,0 +1,52 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 6
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        python-version:
+          - '3.8'
+          - '3.10'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Cache .mypy_cache
+        id: cache-mypy
+        uses: actions/cache@v3
+        with:
+          key: ${{ matrix.python-version }}-${{ runner.os }}
+          path: .mypy_cache
+
+      - uses: actions/setup-python@v4
+        id: python-setup
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+
+      - name: Install dependencies
+        if: steps.python-setup.outputs.cache-hit != 'true'
+        run: poetry install --with dev
+
+      - name: Run flakeheaven
+        run: poetry run flakeheaven lint
+
+      - name: Run black
+        run: poetry run black --check .
+
+      - name: Run isort
+        run: poetry run isort --check-only --profile black .
+
+      - name: Run mypy
+        run: poetry run mypy pyanypay
