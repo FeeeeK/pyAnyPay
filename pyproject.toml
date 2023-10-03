@@ -34,7 +34,7 @@ exclude = ["**/tests/*", "**/test_*"]
 [tool.poetry.dependencies]
 python = "^3.8"
 aiohttp = "^3.8.4"
-msgspec = "0.17.0"
+msgspec = "0.18.3"
 
 [tool.poetry.group.dev.dependencies]
 # Lint
