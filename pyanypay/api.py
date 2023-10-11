@@ -40,9 +40,10 @@ class AnyPayAPI:
             "Content-Type": "multipart/form-data",
         }
         params["sign"] = sign
-        async with aiohttp.ClientSession() as session:
-            async with session.request("POST", url, headers=headers, data=params) as response:
-                content = await response.read()
+        async with aiohttp.ClientSession() as session, session.request(
+            "POST", url, headers=headers, data=params
+        ) as response:
+            content = await response.read()
         response_obj: BaseResponse = msgspec.json.decode(content, type=BaseResponse)  # type: ignore
         return self.validate_response(response_obj)
 
